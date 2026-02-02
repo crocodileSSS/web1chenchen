@@ -10,85 +10,245 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            background: #1a1a2e;
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
         }
-        
-        .container {
-            text-align: center;
-            color: white;
-        }
-        
+
         .title {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 72px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+            letter-spacing: 8px;
         }
-        
-        .subtitle {
-            font-size: 1.5rem;
-            opacity: 0.9;
-            margin-bottom: 60px;
-        }
-        
-        .instruction-box {
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px 50px;
-            display: inline-block;
-        }
-        
-        .instruction-text {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-        }
-        
-        .version {
+
+        .arrow-container {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            color: rgba(255,255,255,0.6);
-            font-size: 0.9rem;
+            right: 120px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            animation: point 1.5s ease-in-out infinite;
+        }
+
+        @keyframes point {
+            0%, 100% {
+                transform: translateY(-50%) translateX(0);
+            }
+            50% {
+                transform: translateY(-50%) translateX(-10px);
+            }
+        }
+
+        .instruction {
+            font-size: 20px;
+            color: #a5b4fc;
+            white-space: nowrap;
+            background: rgba(99, 102, 241, 0.2);
+            padding: 12px 24px;
+            border-radius: 30px;
+            border: 2px solid rgba(99, 102, 241, 0.4);
+        }
+
+        .arrow {
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #a5b4fc);
+            position: relative;
+            margin-right: 15px;
+        }
+
+        .arrow::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 8px solid transparent;
+            border-left-color: #a5b4fc;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="title">AI对话助手</h1>
-        <p class="subtitle">智能对话，竭诚为您服务</p>
-        
-        <div class="instruction-box">
-            <p class="instruction-text">请点击右侧紫色悬浮窗进行对话</p>
-        </div>
-    </div>
-    
-    <div class="version">v1.0</div>
+    <h1 class="title">AI对话助手</h1>
 
-    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>
+    <div class="arrow-container">
+        <div class="arrow"></div>
+        <div class="instruction">请点击右侧紫色悬浮窗进行对话</div>
+    </div>
+
+    <!-- Coze SDK -->
+    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/cn/index.js"></script>
     <script>
-      new CozeWebSDK.WebChatClient({
-        config: {
-          bot_id: '7600919728072409088',
-          isframe: false
-        },
-        componentProps: {
-          title: 'Coze AI助手',
-        },
-        auth: {
-          type: 'token',
-          token: 'pat_mWBJdQM2zLLamct3xdY9YLj4ubEDO3vTBPrZbGS22UWase54L1hltwrA0rZEJ5Fc',
-          onRefreshToken: function () {
-            return 'pat_mWBJdQM2zLLamct3xdY9YLj4ubEDO3vTBPrZbGS22UWase54L1hltwrA0rZEJ5Fc'
-          }
+    (function() {
+        // 配置参数
+        const COZE_CONFIG = {
+            botId: '7600919728072409088',
+            appId: '1146728610588',
+            publicKey: 'r72qfsxX8ZraUDrQk-N8qWBIr34Z95NGHncwHucQHjA',
+            privateKey: `-----BEGIN PRIVATE KEY-----
+MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCT4EHtz1ozPX8X
+M/0sWnWfW71M1IBQPeJoy5Ese6xat+5klIEYuKzW7ijVYarQohfhR7cN7CVu6fh6
++TDo8J37fZeFidGgLWtnX/8k+U8uEcxAfMLnCijpaTnWeETE/K5jDHhnTlI/av9l
+yORAzrN95nUyctZBF5cx3Wv1LCodv90PTBki1pBTvEXEi2Z40PVLn/feaX+tmGwU
+pJgen38Rz+LhRFjKsljxw9Lq1PYquwLwzbZcM4woqnzpWldi1P6wnm74YYRVKyIc
+x2WoLM/9PmIgyEU1xMVXwM5rbC/gTmuy0CrH0A4YYUCek9tDKOIxe7L1nhUrDlW7
+qh/fjxGXAgMBAAECggEAAkZO0qUqjGlS/eeFlVjJ6yfOAeuusQcx5yNWrG6vh4wv
+OejYZ7X9/g54jApjg05wVFwIbRj4VwI8DUwC17uWdAzunAbFcs2YbygSY8wQzuCz
++EgRfSWmMb3mn9tb10GVSzmzHod+8AEUe09JNE7CzD7KaTFL+RNmM7Nl2T/lJAxd
+yCpI1vr3HufCRMg1vNmyuN7nejq2kqieph/nUAymQXOwnT50qfaYvnzfiUomtC3o
++rpM1LeONmdZEcyB+4M4hPChtxq7jWTrJCPsEJhbxF3CQ0c9ILgOYorksSOSgUHw
+f6yaTS0prhN6lj/3eDpOC2sLKuEJqt2von7Dn1R4AQKBgQDJiGphPA77mtDntWb0
+5uvVRt/F2lBdVSu/C9Dp0LF4c99si0rWedDzqSK+S9fOCUlzJ+4URarN6ziNCiI6
+hLcHs/Ojka+CeK1C6EMYF3hK0/gVA7x7ZzpUgST7IQl0cszWSzSDVSmQ8GC/ESoL
+uBgTrrxeT65BynvMxvege0uTlwKBgQC713MnlPAphKZJY3m1n63Auspo6y/6mXIf
+xfvf2Prc/iM1ylLlibvsJ7CBK80/YqkDo5HL40KcqDzKdN0J4Ite0krtbJRb2KXJ
+XPNPJqqoSZwSRgupN0a7cU+eaeFVzwEytNd+jvZM1YbIdasDOdYpOiIZagbCcqhk
+Y+Vm2BAyAQKBgFbVrnCC/jmu9UBBS0FOlmLpDNYlQOdWIWlJ4BQ+1Zj+5E/SnMZY
+6o1yXQP9jdi666jwlYaqlfPv3Af5S9JHCM4K3Xmm9iaTdKQVi4M/6ZbkSkpTt8y8
+J8ftdU+3ZmmEZXoYIWJNOYG38Reif6lZAxbH/WXtkznJ0xniySOevGu1AoGACl30
+tA2LR69Tgh9kWzrJ2yYz/6BjUIBhhRFnOk5+Ye4AwXo+Iv78CSeTnT1uoX3veAzy
+Af+z8HN0j3PtsxradkxC6GGiuoL1e2yO3SJ0Lr+JRpTpFdjAJZ42V7beQd8f4M2M
+SybWvxzVyIB+BLqPcE0ODrsETn0HgCrnQUrRcgECgYAGt88WZ7v3ios7tGlzwxOD
+NBWnXoErCRrd0Wm38Uzzgk3t4LwJ7FuuYI0NxKbB1ZBm26oBKEHyDmMl1uLKQL6A
+A+laKRC+dwGaQa1zgjf0W4sNQiDBsWZRsmc6EnFSBsr8SCQXXZ+2AUIO5bfZ4y7j
+8ixyQ3nUqSDB+LxWmBg/4A==
+-----END PRIVATE KEY-----`
+        };
+
+        // 加载JWT库
+        function loadJwtLibrary() {
+            return new Promise((resolve, reject) => {
+                if (window.KJUR && window.KJUR.jws && window.KJUR.jws.JWS) {
+                    resolve();
+                    return;
+                }
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.20/jsrsasign-all-min.js';
+                script.crossOrigin = 'anonymous';
+                script.onload = () => {
+                    if (window.KJUR && window.KJUR.jws && window.KJUR.jws.JWS) {
+                        resolve();
+                    } else {
+                        reject(new Error('JWT库加载但未正确初始化'));
+                    }
+                };
+                script.onerror = () => reject(new Error('JWT库加载失败'));
+                document.head.appendChild(script);
+            });
         }
-      });
+
+        // 生成JWT
+        function generateCozeJwt(userUid) {
+            const header = {
+                alg: 'RS256',
+                typ: 'JWT',
+                kid: COZE_CONFIG.publicKey
+            };
+            const currentTime = Math.floor(Date.now() / 1000);
+            const payload = {
+                iss: COZE_CONFIG.appId,
+                aud: "api.coze.cn",
+                jti: Math.random().toString(36).substr(2, 32) + Date.now(),
+                iat: currentTime,
+                exp: currentTime + 3600,
+                session_name: userUid
+            };
+            const jwt = window.KJUR.jws.JWS.sign(
+                header.alg,
+                JSON.stringify(header),
+                JSON.stringify(payload),
+                COZE_CONFIG.privateKey
+            );
+            console.log('JWT生成成功:', jwt.substring(0, 50) + '...' + jwt.substring(jwt.length - 20));
+            return jwt;
+        }
+
+        // 获取用户唯一标识
+        function getUserUid() {
+            let visitorId = localStorage.getItem('coze_visitor_id');
+            if (!visitorId) {
+                visitorId = `visitor_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                localStorage.setItem('coze_visitor_id', visitorId);
+            }
+            return visitorId;
+        }
+
+        // 初始化Coze聊天
+        async function initCozeChat() {
+            try {
+                const userUid = getUserUid();
+                const jwtToken = generateCozeJwt(userUid);
+
+                console.log('开始获取access_token...');
+
+                const response = await fetch("https://api.coze.cn/api/permission/oauth2/token", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    },
+                    body: JSON.stringify({
+                        grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+                        duration_seconds: 900
+                    })
+                });
+
+                console.log('response status:', response.status);
+                const responseText = await response.text();
+                console.log('response body:', responseText);
+
+                if (!response.ok) {
+                    throw new Error(`获取token失败: ${response.status}, 详情: ${responseText}`);
+                }
+
+                const data = JSON.parse(responseText);
+
+                new CozeWebSDK.WebChatClient({
+                    config: {
+                        bot_id: COZE_CONFIG.botId,
+                        isframe: false
+                    },
+                    componentProps: {
+                        title: 'AI对话助手'
+                    },
+                    auth: {
+                        type: 'token',
+                        token: data.access_token,
+                        onRefreshToken: () => data.access_token
+                    }
+                });
+
+                console.log('Coze聊天已初始化，用户ID:', userUid);
+            } catch (error) {
+                console.error('初始化失败:', error.message);
+            }
+        }
+
+        // 初始化流程
+        async function init() {
+            try {
+                await loadJwtLibrary();
+                initCozeChat();
+            } catch (error) {
+                console.error('初始化失败:', error.message);
+            }
+        }
+
+        if (document.readyState === 'complete') {
+            init();
+        } else {
+            window.addEventListener('load', init);
+        }
+    })();
     </script>
 </body>
 </html>
