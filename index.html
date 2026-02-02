@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI对话助手</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            text-align: center;
+            color: white;
+        }
+        
+        .title {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 60px;
+        }
+        
+        .instruction-box {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px 50px;
+            display: inline-block;
+        }
+        
+        .instruction-text {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+        
+        .version {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">AI对话助手</h1>
+        <p class="subtitle">智能对话，竭诚为您服务</p>
+        
+        <div class="instruction-box">
+            <p class="instruction-text">请点击右侧紫色悬浮窗进行对话</p>
+        </div>
+    </div>
+    
+    <div class="version">v1.0</div>
+
+    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>
+    <script>
+      new CozeWebSDK.WebChatClient({
+        config: {
+          bot_id: '7600919728072409088',
+          isframe: false
+        },
+        componentProps: {
+          title: 'Coze AI助手',
+        },
+        auth: {
+          type: 'token',
+          token: 'pat_mWBJdQM2zLLamct3xdY9YLj4ubEDO3vTBPrZbGS22UWase54L1hltwrA0rZEJ5Fc',
+          onRefreshToken: function () {
+            return 'pat_mWBJdQM2zLLamct3xdY9YLj4ubEDO3vTBPrZbGS22UWase54L1hltwrA0rZEJ5Fc'
+          }
+        }
+      });
+    </script>
+</body>
+</html>
